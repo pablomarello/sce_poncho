@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'NEUE';
+  src: url(./assets/fonts/NeueHaasDisplayLight.ttf);
+}

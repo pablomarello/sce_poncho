@@ -68,7 +68,7 @@ export const QuestionCard = () => {
         <p className="text-lg mb-6">Respuestas correctas: {score} de {questions.length}!</p>
         <button
           onClick={handleRestart}
-          className="bg-amarillo text-white px-4 py-2 rounded-full font-medium font-neue"
+          className="bg-amarillo text-white px-4 py-2 rounded-full font-medium font-neue font-semibold"
         >
           Volver a jugar
         </button>
@@ -79,7 +79,7 @@ export const QuestionCard = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className="w-full h-[45vh] max-w-3xl mx-auto p-4 rounded-lg shadow-md">
+    <div className="w-full h-auto max-w-3xl mx-auto p-4 rounded-lg shadow-md mt-2 mb-2">
       <div className="flex justify-between items-center mb-4">
         <span className="text-sm text-gray-500 font-neue">{currentQuestionIndex + 1} de {questions.length}</span>
       </div>

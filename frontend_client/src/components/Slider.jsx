@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { images } from '../assets/images';
 import { Trivia } from '../pages/Trivia';
-import { faCake, faTrophy, faGamepad, faMapMarked, faGlobe, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faTrophy, faLocationDot, faGamepad, faEarthAmericas, faGlobe, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './Icon';
 import { Link } from 'react-router-dom';
 
@@ -29,8 +29,15 @@ export const Slider = () => {
         inline: "center"
       })
     }
-
+  
   }, [currentIndex]);
+
+  useEffect(() => {
+    const interval = setInterval(nextImage, 5000); // Cambia la imagen cada 5 segundos
+
+    return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
+  }, []);
+
   return (
     <div className="relative w-full h-[85vh]">
       <div className="text-3xl">
@@ -49,12 +56,14 @@ export const Slider = () => {
           })
         }
       </ul>
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-10 flex space-x-12">
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-10 flex space-x-16">
               <Link to="/trivia">
-                <button className="bg-amarillo text-white px-20 py-3 rounded-full font-neue">Trivia <Icon icon={faGamepad}/></button>
+                <button className="bg-amarillo text-white text-2xl px-20 py-3 rounded-2xl mr-16 font-bold italic hover:shadow-lg hover:scale-105 opacity-70">Juego de Preguntas<Icon icon={faGamepad}/></button>
+                {/* <button className='text-white bg-amarillo font-bold rounded-lg italic text-6xl mr-16'>Trivia</button> */}
               </Link>
               <Link to="/mapa">
-                <button className="bg-amarillo text-white px-20 py-3 rounded-full font-neue">Mapa <Icon icon={faGlobe}/></button>
+                <button className="bg-amarillo text-white text-2xl px-20 py-3 rounded-2xl font-bold italic hover:shadow-lg hover:scale-105">Mapa de Exportaciones<Icon icon={faEarthAmericas}/></button>
+                {/* <button className='text-white bg-amarillo font-bold rounded-lg italic text-6xl'>Mapa</button> */}
               </Link>
                 
       </div>

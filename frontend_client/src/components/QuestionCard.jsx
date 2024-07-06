@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { questions as questionsData } from "../data";
+import Swal from 'sweetalert2';
 
 const shuffleArray = (array) => {
   return array.sort(() => Math.random() - 0.5);
@@ -42,10 +43,20 @@ export const QuestionCard = () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
         setShowResult(true);
+        if (score + 1 === 8) {
+          Swal.fire({
+            title: '¡Felicidades!',
+            text: '¡Has acertado todas las preguntas!',
+            imageUrl: 'src/assets/img/congrat.gif',
+            imageWidth: 400, 
+            imageHeight: 200,
+            confirmButtonText: 'Aceptar'
+          });
+        }
       }
       setSelectedAnswer(null);
       setIsAnswerCorrect(null);
-    }, 3000);
+    }, 4000);
   };
 
   const handleRestart = () => {
@@ -93,11 +104,13 @@ export const QuestionCard = () => {
           <button
             key={index}
             onClick={() => handleAnswerClick(answer)}
-            className={`px-6 py-3 rounded-full font-medium font-neue ${
+            className={`px-6 py-3 rounded-2xl font-medium font-neue ${
               selectedAnswer === answer
                 ? isAnswerCorrect
                   ? 'bg-green-600 text-white'
                   : 'bg-red-600 text-white'
+                : selectedAnswer && answer === currentQuestion.correct_answer
+                ? 'bg-green-600 text-white'
                 : 'bg-morado text-white'
             }`}
             disabled={selectedAnswer !== null}
@@ -115,7 +128,7 @@ export const QuestionCard = () => {
             setSelectedAnswer(null);
             setIsAnswerCorrect(null);
           }}
-          className="font-neue bg-amarillo border-2 border-amarillo text-white px-4 py-2 rounded-full font-medium"
+          className="font-neue bg-amarillo border-2 border-amarillo text-white px-4 py-2 rounded-2xl font-medium"
         >
           Reiniciar juego
         </button>

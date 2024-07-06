@@ -31,7 +31,7 @@ export const questions = [
   },
   {
     id:4,
-    question:'En el año 2023 ¿Qué paises fueron los principales compradores de vinos catamarqueños?',
+    question:'En el año 2023 ¿Qué países fueron los principales compradores de vinos catamarqueños?',
     correct_answer:'España y Brasil',
     incorrect_answer:[
       'Brasil y Chile',

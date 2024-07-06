@@ -5,4 +5,17 @@
 @font-face {
   font-family: 'NEUE';
   src: url(./assets/fonts/NeueHaasDisplayLight.ttf);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NEUE-BOLD';
+  src: url(./assets/fonts/NeueHaasDisplayBold.ttf);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NEUE-BOLD-ITALIC';
+  src: url(./assets/fonts/NeueHaasDisplayBoldItalic.ttf);
+  font-style: italic;
 }

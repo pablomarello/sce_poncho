@@ -23,14 +23,11 @@ export const MapCard = () => {
   const mapRef = useRef(null)
   const [selectedCountry, setSelectedCountry] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log(featureCollection);
 
   const getDataMapa = () => {
     setFeatureCollection(exportaciones)
   }
-
-  useEffect(()=>{
-    getDataMapa()
-  })
 
   useEffect(() => {
     if(featureCollection && featureCollection.features) {
@@ -44,7 +41,14 @@ export const MapCard = () => {
       const bounds = L.latLngBounds(coords);
       mapRef.current.fitBounds(bounds);
       const zoom = mapRef.current.getBoundsZoom(coords);
-      setZoom(zoom);
+      
+      if (coords.length == 1) {
+        mapRef.current.setZoom(5);
+      } else if (coords.length > 1 ) {
+        mapRef.current.setZoom(zoom);
+      }
+    } else {
+      getDataMapa()
     }
   }, [featureCollection])
   
@@ -108,7 +112,7 @@ export const MapCard = () => {
     
       <div className="relative w-full h-[77vh] z-0" >
       
-      <MapContainer className='h-full' center={[-28.46957, -65.78524]} zoom={zoom}  zoomControl={false} ref={mapRef}>
+      <MapContainer className='h-full' zoom={zoom}  zoomControl={false} ref={mapRef}>
         <TileLayer
 
           /* attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

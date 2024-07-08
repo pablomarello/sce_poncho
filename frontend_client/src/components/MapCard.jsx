@@ -4,8 +4,9 @@ import { TileLayer } from 'react-leaflet/TileLayer'
 import { ZoomControl } from 'react-leaflet/ZoomControl'
 import { exportaciones } from "/datamapa";
 import { Marker } from 'react-leaflet/Marker'
-import { Popup } from 'react-leaflet';
+import { Popup, Polyline  } from 'react-leaflet';
 import { Card } from './Card';
+import { CardCatamarca } from './CardCatamarca';
 import { Icon } from './Icon';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from './Modal';
@@ -13,7 +14,7 @@ import 'leaflet/dist/leaflet.css';
 import '@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.css';
 import '@ansur/leaflet-pulse-icon';
 import * as L from 'leaflet';
-// import package from '../assets/img/package.png';
+import packageIcon from '../assets/img/package.png';
 
 
 
@@ -23,11 +24,16 @@ export const MapCard = () => {
   const mapRef = useRef(null)
   const [selectedCountry, setSelectedCountry] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [filteredCoords, setFilteredCoords] = useState(null);
+
   console.log(featureCollection);
+
 
   const getDataMapa = () => {
     setFeatureCollection(exportaciones)
   }
+
 
   useEffect(() => {
     if(featureCollection && featureCollection.features) {
@@ -59,9 +65,16 @@ export const MapCard = () => {
       });
       console.log('pais filtrado:', filteredData);
       setFeatureCollection({ ...exportaciones, features: filteredData });
+
+      if (filteredData.length > 0) {
+        setFilteredCoords([filteredData[0].geometry.coordinates[1], filteredData[0].geometry.coordinates[0]]);
+      } else {
+        setFilteredCoords(null);
+      }
     } else {
       console.log('se reestablecen todo los paises');
       setFeatureCollection(exportaciones);
+      setFilteredCoords(null);
     }
   };
 
@@ -77,8 +90,16 @@ export const MapCard = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  
+  const fixedPoint = [-28.46957, -65.78524];
 
+ 
+  const fixedPulseIcon = L.icon.pulse({
+    iconSize: [12, 12],
+    color: 'red'
+  });
+
+  // Extraer los países únicos
+  const uniqueCountries = [...new Set(exportaciones.features.map(feature => feature.properties.pais))];
 
   return (
     <>
@@ -93,26 +114,26 @@ export const MapCard = () => {
         </button>
 
       <Modal isOpen={isModalOpen} onClose={toggleModal}>
-        <div className="p-4">
-          <select
-            value={selectedCountry}
-            onChange={handleCountryChange}
-            className="p-2 border border-gray-400 rounded"
-          >
-            <option value="">Todos los países</option>
-            <option value="Brasil">Brasil</option>
-            <option value="China">China</option>
-            <option value="Burkina Faso">Burkina Faso</option>
-            <option value="Argelia">Argelia</option>
-            {/* Añade más opciones según tus datos */}
-          </select>
-        </div>
-      </Modal>
+          <div className="p-4">
+            <select
+              value={selectedCountry}
+              onChange={handleCountryChange}
+              className="p-2 border border-gray-400 rounded"
+            >
+              <option value="">Todos los países</option>
+              {uniqueCountries.map((pais, index) => (
+                <option key={index} value={pais}>{pais}</option>
+              ))}
+            </select>
+          </div>
+        </Modal>
     </div>
     
       <div className="relative w-full h-[77vh] z-0" >
       
-      <MapContainer className='h-full' zoom={zoom}  zoomControl={false} ref={mapRef}>
+
+      <MapContainer className='h-full'  zoom={zoom}  zoomControl={false} ref={mapRef}>
+
         <TileLayer
 
           /* attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -136,12 +157,21 @@ export const MapCard = () => {
               
         />
         <ZoomControl position='bottomright'/>
+        <Marker
+            position={fixedPoint}
+            icon={fixedPulseIcon}
+          >
+            <Popup className='w-100'>
+              <CardCatamarca />
+            </Popup>
+          </Marker>
         {
           featureCollection && featureCollection.features &&
           featureCollection.features.map((feature, index) => {
             const pulseIcon = L.icon.pulse({
               iconSize:[12,12],
-              color:'blue'
+              color:'blue',
+              fillColor: 'blue'
             });
             return (
               <Marker
@@ -160,6 +190,14 @@ export const MapCard = () => {
             
           })
         }
+        {
+            filteredCoords && (
+              <Polyline
+                positions={[fixedPoint, filteredCoords]}
+                color="red"
+              />
+            )
+          }
       </MapContainer>
       
     </div>

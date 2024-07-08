@@ -2,7 +2,7 @@ export const Card = ({ feature }) => {
   return (
     <div className="w-full p-4 bg-gray-300 rounded-lg shadow-lg font-neue">
       <h2 className="text-lg font-semibold mb-2">Destino: {feature.properties.pais}</h2>
-      <img src="https://via.placeholder.com/300x150" alt="IMAGEN" className="w-full h-40 object-cover rounded-lg mb-4" />
+      <img src={feature.properties.imagen} alt={`Imagen de producto de ${feature.properties.pais}`} className="w-full h-40 object-cover rounded-lg mb-4" />
       
       <h2 className="text-md font-bold mb-2">Principales productos exportados:</h2>
       <div className="text-sm">

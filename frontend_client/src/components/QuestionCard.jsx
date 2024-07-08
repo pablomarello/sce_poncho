@@ -42,15 +42,24 @@ export const QuestionCard = () => {
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
-        setShowResult(true);
-        if (score + 1 === 8) {
+        if (score + (correct ? 1 : 0) === 8) {
           Swal.fire({
-            title: '¡Felicidades!',
-            text: '¡Acertaste todas las preguntas!',
+            title: '¡Felicidades, ganaste!',
+            text: `Respuestas correctas: ${score + (correct ? 1 : 0)} de ${questions.length}`,
             imageUrl: 'src/assets/img/congrat.gif',
-            imageWidth: 400, 
+            imageWidth: 400,
             imageHeight: 200,
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Volver a jugar'
+          }).then(() => {
+            handleRestart();
+          });
+        } else {
+          Swal.fire({
+            title: 'Gracias por participar',
+            text: `Suerte la próxima. Respuestas correctas: ${score + (correct ? 1 : 0)} de ${questions.length}`,
+            confirmButtonText: 'Volver a jugar'
+          }).then(() => {
+            handleRestart();
           });
         }
       }
@@ -72,7 +81,7 @@ export const QuestionCard = () => {
     return <div>Cargando...</div>;
   }
 
-  if (showResult) {
+  /* if (showResult) {
     return (
       <div className="w-full h-[45vh] max-w-3xl mx-auto p-6 border rounded-lg shadow-md text-center">
         <p className="text-2xl font-semibold font-neue mb-10">Resultado final</p>
@@ -85,7 +94,7 @@ export const QuestionCard = () => {
         </button>
       </div>
     );
-  }
+  } */
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -128,7 +137,7 @@ export const QuestionCard = () => {
             setSelectedAnswer(null);
             setIsAnswerCorrect(null);
           }}
-          className="font-neue border border-amarillo text-black px-4 py-2 rounded-xl font-medium"
+          className="font-neue shadow-lg border text-black px-4 py-2 rounded-xl font-medium"
         >
           Reiniciar juego
         </button>

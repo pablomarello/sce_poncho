@@ -5,7 +5,7 @@ export const Card = ({ feature }) => {
       <img src={feature.properties.imagen} alt={`Imagen de producto de ${feature.properties.pais}`} className="w-full h-40 object-cover rounded-lg mb-4" />
       
       <h2 className="text-md font-bold mb-2">Principales productos exportados:</h2>
-      <div className="text-sm">
+      <div className="text-sm text-black">
         <div className="flex justify-between font-bold">
           {/* <span>Producto</span>
           <span>Fob Dólar</span>

@@ -4,7 +4,7 @@ import { TileLayer } from 'react-leaflet/TileLayer'
 import { ZoomControl } from 'react-leaflet/ZoomControl'
 import { exportaciones } from "/datamapa";
 import { Marker } from 'react-leaflet/Marker'
-import { Popup, Polyline  } from 'react-leaflet';
+import { Popup, Polyline, GeoJSON  } from 'react-leaflet';
 import { Card } from './Card';
 import { CardCatamarca } from './CardCatamarca';
 import { Icon } from './Icon';
@@ -15,6 +15,7 @@ import '@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.css';
 import '@ansur/leaflet-pulse-icon';
 import * as L from 'leaflet';
 import packageIcon from '../assets/img/package.png';
+import provinciasData from '../data/provincia.json'; // Ajusta la ruta según la estructura de tu proyecto
 
 
 
@@ -25,12 +26,37 @@ export const MapCard = () => {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filteredCoords, setFilteredCoords] = useState(null);
+  const [geoJsonData, setGeoJsonData] = useState(null);
 
   const getDataMapa = () => {
     setFeatureCollection(exportaciones)
   }
 
-  
+  /* useEffect(() => {
+    // Cargar los datos de Catamarca
+    setGeoJsonData(provinciasData);
+  }, []); */
+
+  useEffect(() => {
+    // Filtrar los datos para obtener solo la provincia de Catamarca
+    const catamarcaData = provinciasData.features.filter(
+      feature => feature.properties.nam === 'Catamarca'
+    );
+    // Crear un nuevo FeatureCollection con los datos filtrados
+    const catamarcaGeoJson = {
+      type: 'FeatureCollection',
+      features: catamarcaData,
+    };
+    setGeoJsonData(catamarcaGeoJson);
+  }, []);
+
+  const geoJsonStyle = {
+    color: 'red',
+    weight: 2,
+    fillOpacity: 0.2,
+  };
+
+
   useEffect(() => {
     if(featureCollection && featureCollection.features) {
       let coords = [];
@@ -46,6 +72,8 @@ export const MapCard = () => {
       
       if (coords.length == 1) {
         mapRef.current.setZoom(5);
+        const boundCoords = [fixedPoint, coords[0]];
+        mapRef.current.fitBounds(L.latLngBounds(boundCoords));
       } else if (coords.length > 1 ) {
         mapRef.current.setZoom(zoom);
       }
@@ -95,11 +123,11 @@ export const MapCard = () => {
   });
 
   // Extraer los países únicos
-  const uniqueCountries = [...new Set(exportaciones.features.map(feature => feature.properties.pais))];
+  const uniqueCountries = [...new Set(exportaciones.features.map(feature => feature.properties.pais))].sort();
 
   return (
     <>
-    <div className="absolute top-20 left-4 z-10">
+    <div className="absolute top-20 left-4 z-10 font-neue">
         <button className="p-2 bg-azulclaro text-white shadow-lg rounded-md flex items-center" onClick={toggleModal}>
         <span className="mr-2">
       <Icon icon={faFilter} />
@@ -109,8 +137,8 @@ export const MapCard = () => {
     </span>
         </button>
 
-      <Modal isOpen={isModalOpen} onClose={toggleModal}>
-          <div className="p-4">
+      <Modal isOpen={isModalOpen} onClose={toggleModal} >
+          <div className="p-4 ">
             <select
               value={selectedCountry}
               onChange={handleCountryChange}
@@ -151,12 +179,16 @@ export const MapCard = () => {
               
         />
         <ZoomControl position='bottomright'/>
+        {geoJsonData && <GeoJSON data={geoJsonData} style={geoJsonStyle} />}
         <Marker
             position={fixedPoint}
             icon={fixedPulseIcon}
           >
-            <Popup className='w-100'>
-              <CardCatamarca />
+            <Popup className='w-80'>
+              
+              <CardCatamarca/>
+            
+              
             </Popup>
           </Marker>
         {
@@ -174,11 +206,13 @@ export const MapCard = () => {
               icon={pulseIcon}
               >
                 <Popup
-                key={index}
-                className='w-100'
-                >
-                <Card feature={feature}/>
-                </Popup>
+                    key={index}
+                    className='w-80'
+                  >
+                    
+                      <Card feature={feature} />
+                    
+                  </Popup>
               </Marker>
             )
             

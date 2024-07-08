@@ -51,7 +51,7 @@ export const Slider = () => {
         {
           images.map((item) => {
             return <li key={item.id} className="w-full flex-shrink-0" >
-              <img src={item.imgUrl} className="w-full h-full bg-cover " alt="" />
+              <img src={item.imgUrl} className="w-full h-full bg-cover" alt="" />
             </li>
           })
         }

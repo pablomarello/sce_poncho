@@ -50,6 +50,8 @@ export const MapCard = () => {
       
       if (coords.length == 1) {
         mapRef.current.setZoom(5);
+        const boundCoords = [fixedPoint, coords[0]];
+        mapRef.current.fitBounds(L.latLngBounds(boundCoords));
       } else if (coords.length > 1 ) {
         mapRef.current.setZoom(zoom);
       }

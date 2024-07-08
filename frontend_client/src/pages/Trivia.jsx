@@ -5,11 +5,13 @@ import { ImageCard } from "../components/ImageCard"
 
 export function Trivia () {
   return (
-    <div>
-      <Navbar/>
-      <ImageCard/>
-      <QuestionCard/>
-      <Footer/>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <ImageCard />
+      <div className="flex-grow flex  ">
+        <QuestionCard className="flex-grow" />
+      </div>
+      <Footer />
     </div>
   )
 }

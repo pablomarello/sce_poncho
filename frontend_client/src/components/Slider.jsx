@@ -58,11 +58,11 @@ export const Slider = () => {
       </ul>
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-10 flex space-x-16">
               <Link to="/trivia">
-                <button className="bg-amarillo text-white text-2xl px-20 py-3 rounded-2xl mr-16 font-bold italic hover:shadow-lg hover:scale-105 opacity-70">Juego de Preguntas<Icon icon={faGamepad}/></button>
+                <button className="bg-amarillo text-white text-2xl px-20 py-3 rounded-2xl mr-16 font-bold italic hover:shadow-lg hover:scale-105 bg-opacity-60">Juego de Preguntas<Icon icon={faGamepad}/></button>
                 {/* <button className='text-white bg-amarillo font-bold rounded-lg italic text-6xl mr-16'>Trivia</button> */}
               </Link>
               <Link to="/mapa">
-                <button className="bg-amarillo text-white text-2xl px-20 py-3 rounded-2xl font-bold italic hover:shadow-lg hover:scale-105">Mapa de Exportaciones<Icon icon={faEarthAmericas}/></button>
+                <button className="bg-amarillo text-white text-2xl px-20 py-3 rounded-2xl font-bold italic hover:shadow-lg hover:scale-105 bg-opacity-60">Mapa de Exportaciones<Icon icon={faEarthAmericas}/></button>
                 {/* <button className='text-white bg-amarillo font-bold rounded-lg italic text-6xl'>Mapa</button> */}
               </Link>
                 

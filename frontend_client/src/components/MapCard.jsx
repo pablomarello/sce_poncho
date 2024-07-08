@@ -24,13 +24,17 @@ export const MapCard = () => {
   const mapRef = useRef(null)
   const [selectedCountry, setSelectedCountry] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [filteredCoords, setFilteredCoords] = useState(null);
+
+  console.log(featureCollection);
+
 
   const getDataMapa = () => {
     setFeatureCollection(exportaciones)
   }
 
-  
+
   useEffect(() => {
     if(featureCollection && featureCollection.features) {
       let coords = [];
@@ -127,7 +131,9 @@ export const MapCard = () => {
     
       <div className="relative w-full h-[77vh] z-0" >
       
+
       <MapContainer className='h-full'  zoom={zoom}  zoomControl={false} ref={mapRef}>
+
         <TileLayer
 
           /* attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

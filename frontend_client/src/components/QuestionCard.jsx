@@ -79,7 +79,9 @@ export const QuestionCard = () => {
         <p className="text-xl mb-16 font-neue">Respuestas correctas: {score} de {questions.length}!</p>
         <button
           onClick={handleRestart}
+
           className="bg-amarillo text-white px-6 py-3 rounded-xl text-2xl font-neue"
+
         >
           Volver a jugar
         </button>

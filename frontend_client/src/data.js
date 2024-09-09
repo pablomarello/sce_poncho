@@ -1,7 +1,7 @@
 export const questions = [
   {
     id:1,
-    question:'Cuál es el producto más exportado por nuestra provincia?',
+    question:'¿Cuál es el producto más exportado por nuestra provincia?',
     correct_answer:'Carbonato de Litio',
     incorrect_answer:[
       'Aceite de Oliva',
@@ -11,7 +11,7 @@ export const questions = [
   },
   {
     id:2,
-    question:'Cuál de los siguientes países es el principal destino de las exportaciones catamarqueñas?',
+    question:'¿Cuál de los siguientes países es el principal destino de las exportaciones catamarqueñas?',
     correct_answer:'China',
     incorrect_answer:[
       'Estados Unidos',
@@ -59,7 +59,7 @@ export const questions = [
   },
   {
     id:7,
-    question:'Cuáles son las representaciones consulares que existen actualmente en Catamarca?',
+    question:'¿Cuáles son las representaciones consulares que existen actualmente en Catamarca?',
     correct_answer:'Italia y España',
     incorrect_answer:[
       'España, Italia y Francia',

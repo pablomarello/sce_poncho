@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllProductos } from "../api/productos.api";
+// import { getAllProductos } from "../api/productos.api";
 
 
 export function ProductoList() {

@@ -6,6 +6,7 @@ import { Navigation } from './components/Navigation';
 import { Navbar } from './components/Navbar';
 import { Trivia } from './pages/Trivia';
 import { Map } from './pages/Map';
+import { Exportaciones } from './pages/Exportaciones';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path='/productos' Component={Productos}/>
         <Route path='/mapa' Component={Map} />
         <Route path='/trivia' Component={Trivia} />
+        <Route path="/exportaciones" element={<Exportaciones/>}/>
       </Routes>
     </Router>
     {/* <AppRouter/> */}

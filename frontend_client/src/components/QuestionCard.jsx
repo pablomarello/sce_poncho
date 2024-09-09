@@ -140,6 +140,25 @@ export const QuestionCard = () => {
     return <div>Cargando...</div>;
   }
 
+
+  if (showResult) {
+    return (
+      <div className="w-full h-[45vh] max-w-3xl mx-auto p-6 border rounded-lg shadow-md text-center">
+        <p className="text-2xl font-semibold font-neue mb-10">Resultado final</p>
+        <p className="text-xl mb-16 font-neue">Respuestas correctas: {score} de {questions.length}!</p>
+        <button
+          onClick={handleRestart}
+
+          className="bg-amarillo text-white px-6 py-3 rounded-xl text-2xl font-neue"
+
+        >
+          Volver a jugar
+        </button>
+      </div>
+    );
+  }
+
+
   const currentQuestion = questions[currentQuestionIndex];
 
   return (

@@ -24,11 +24,19 @@ export const MapCard = () => {
   const mapRef = useRef(null);
   const [selectedCountry, setSelectedCountry] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [filteredCoords, setFilteredCoords] = useState(null);
   const [geoJsonData, setGeoJsonData] = useState(null);
   const movingMarkerRef = useRef(null);
   const [totalFobDolar, setTotalFobDolar] = useState(0);
   const [totalPesoNeto, setTotalPesoNeto] = useState(0);
+
+
+
+  const getDataMapa = () => {
+    setFeatureCollection(exportaciones)
+  }
+
 
   useEffect(() => {
     getAllExportaciones()
@@ -95,7 +103,9 @@ export const MapCard = () => {
         mapRef.current.setZoom(5);
         const boundCoords = [fixedPoint, coords[0]];
         mapRef.current.fitBounds(L.latLngBounds(boundCoords));
+
       } else if (coords.length > 1) {
+
         mapRef.current.setZoom(zoom);
       }
     }
@@ -215,6 +225,7 @@ export const MapCard = () => {
             </select>
           </div>
         </Modal>
+
       </div>
 
       <div className="relative w-full h-[77.4vh] z-0">
@@ -226,6 +237,7 @@ export const MapCard = () => {
           <ZoomControl position='bottomright' />
           {geoJsonData && <GeoJSON data={geoJsonData} style={geoJsonStyle} />}
           <Marker
+
             position={fixedPoint}
             icon={fixedPulseIcon}
           >

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { questions as questionsData } from "../data";
+import { getAllPreguntas } from '../api/preguntas.api';
+import { getAllRespuestasIncorrectas } from '../api/respuestasIncorrectas';
 import Swal from 'sweetalert2';
+//import { questions as questionsData } from "../data";
 
 const shuffleArray = (array) => {
   return array.sort(() => Math.random() - 0.5);
@@ -16,9 +18,43 @@ export const QuestionCard = () => {
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
-    // Mezcla las preguntas una vez cuando el componente se monta
-    setQuestions(shuffleArray([...questionsData]));
+    const fetchQuestionsAndAnswers = async () => {
+      try {
+        const preguntas = await getAllPreguntas();
+        const respuestasIncorrectas = await getAllRespuestasIncorrectas();
+  
+        const combinedQuestions = preguntas.map((pregunta) => {
+          // Encuentra las respuestas incorrectas que corresponden a la pregunta actual
+          const respuestas = respuestasIncorrectas
+            .filter((respuesta) => respuesta.question_inc === pregunta.id)
+            .map((respuesta) => respuesta.answer_incorrect); 
+  
+          return {
+            ...pregunta,
+            incorrect_answer: respuestas, // Añade las respuestas incorrectas a la pregunta
+          };
+        });
+  
+       
+  
+        setQuestions(shuffleArray(combinedQuestions));
+      } catch (error) {
+        console.error("Error al cargar preguntas y respuestas:", error);
+      }
+    };
+  
+    fetchQuestionsAndAnswers();
   }, []);
+  
+  // funcion usada para extraer las preguntas del archivo data.js
+  /* const handleRestart = () => {
+    setQuestions(shuffleArray([...questionsData])); // Mezcla las preguntas de nuevo
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setSelectedAnswer(null);
+    setIsAnswerCorrect(null);
+    setShowResult(false);
+  }; */
 
   useEffect(() => {
     if (questions.length > 0) {
@@ -42,11 +78,11 @@ export const QuestionCard = () => {
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
-        if (score + (correct ? 1 : 0) === 8) {
+        if (score + (correct ? 1 : 0) === questions.length) {
           Swal.fire({
             title: '¡Felicidades, ganaste!',
             text: `Respuestas correctas: ${score + (correct ? 1 : 0)} de ${questions.length}`,
-            imageUrl: 'src/assets/img/congrat.gif',
+            imageUrl: '/imagenes/congrat.gif',
             imageWidth: 400,
             imageHeight: 200,
             confirmButtonText: 'Volver a jugar'
@@ -69,32 +105,40 @@ export const QuestionCard = () => {
   };
 
   const handleRestart = () => {
-    setQuestions(shuffleArray([...questionsData])); // Mezcla las preguntas de nuevo
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setSelectedAnswer(null);
-    setIsAnswerCorrect(null);
-    setShowResult(false);
+    // Refresca las preguntas desde la API nuevamente
+    const fetchQuestionsAndAnswers = async () => {
+      try {
+        const preguntas = await getAllPreguntas();
+        const respuestasIncorrectas = await getAllRespuestasIncorrectas();
+
+       
+
+        const combinedQuestions = preguntas.map((pregunta) => {
+          return {
+            ...pregunta,
+            incorrect_answer: respuestasIncorrectas
+              .filter((respuesta) => respuesta.question_inc === pregunta.id)
+              .map((respuesta) => respuesta.answer_incorrect),
+          };
+        });
+
+        setQuestions(shuffleArray(combinedQuestions));
+        setCurrentQuestionIndex(0);
+        setScore(0);
+        setSelectedAnswer(null);
+        setIsAnswerCorrect(null);
+        setShowResult(false);
+      } catch (error) {
+        console.error("Error al reiniciar el juego:", error);
+      }
+    };
+
+    fetchQuestionsAndAnswers();
   };
 
   if (questions.length === 0) {
     return <div>Cargando...</div>;
   }
-
-  /* if (showResult) {
-    return (
-      <div className="w-full h-[45vh] max-w-3xl mx-auto p-6 border rounded-lg shadow-md text-center">
-        <p className="text-2xl font-semibold font-neue mb-10">Resultado final</p>
-        <p className="text-xl mb-16 font-neue">Respuestas correctas: {score} de {questions.length}!</p>
-        <button
-          onClick={handleRestart}
-          className="bg-amarillo text-white px-6 py-3 rounded-xl text-2xl font-neue"
-        >
-          Volver a jugar
-        </button>
-      </div>
-    );
-  } */
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -130,13 +174,7 @@ export const QuestionCard = () => {
       </div>
       <div className="text-right ">
         <button
-          onClick={() => {
-            setQuestions(shuffleArray([...questionsData])); // Mezcla las preguntas de nuevo
-            setCurrentQuestionIndex(0);
-            setScore(0);
-            setSelectedAnswer(null);
-            setIsAnswerCorrect(null);
-          }}
+          onClick={handleRestart}
           className="font-neue shadow-lg border text-black px-4 py-2 rounded-xl font-medium"
         >
           Reiniciar juego

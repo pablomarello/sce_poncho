@@ -1,5 +1,6 @@
 import axios from 'axios'
 
-export const getAllProductos = () =>{
-  return axios.get("http://localhost:8000/productos/api/productos")
+export const getAllExportaciones = async () => {
+  const response = await axios.get('http://localhost:8000/exportaciones/api/exportaciones/');
+  return response.data;
 }
